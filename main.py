@@ -1,4 +1,5 @@
 import pandas as pd
+import sqlite3
 
 
 def extract_data():
@@ -20,9 +21,9 @@ def remove_empty_spo2(data):
     :param data: dataframe with NaN values
     :return: dataframe without NaN values
     """
-    data = data[data['Oxygen Saturation Average'].notna()]
+    full_data = data[data['SpO2Avg'].notna()].copy()
 
-    return data
+    return full_data
 
 
 def convert_date(data):
@@ -47,13 +48,13 @@ def convert_date(data):
     }
 
     # slicing the string so that it only includes the date.
-    data['Date'] = data['Date'].replace(dates, regex=True).str[-11:]
+    data['toDate'] = data['toDate'].replace(dates, regex=True).str.slice(-11)
 
     # removing the first value in the string because it is an integer, and formatting it as a date
-    data['Date'] = data['Date'].str.replace(',', '').str.replace(' ', '', 1).str.replace(' ', '-')
+    data['toDate'] = data['toDate'].str.replace(',', '').str.replace(' ', '', 1).str.replace(' ', '-')
 
     # converting the string to a datetime format
-    data['Date'] = pd.to_datetime(data['Date'], dayfirst=True)
+    data['toDate'] = pd.to_datetime(data['toDate'], dayfirst=True).dt.strftime("%Y/%m/%d")
 
     return data
 
@@ -63,22 +64,47 @@ def transform_data(data):
     Transforming the data so that it is useful and all rows have data
     :return: data that has been cleaned
     """
-    # renaming columns
-    data.columns = ['Date', 'Wakeup Time', 'Hours Slept', 'Efficiency', 'Quality Sleep Time', 'Deep Sleep Time',
-                    'Oxygen Saturation Average']
+
+    transformed = remove_empty_spo2(data)
+    convert_date(transformed)
 
     # slicing the string because it includes the date as well
     # cannot use datetime (%H:%M:%S) format as it is stored as a string
-    data['Wakeup Time'] = data['Wakeup Time'].str.slice(11, 19)
+    transformed['waketime'] = transformed['waketime'].str.slice(11, 19)
 
-    remove_empty_spo2(data)
-    convert_date(data)
+    # renaming columns to match database
+    transformed.columns = ['date', 'wakeup_time', 'hours_slept', 'sleep_efficiency', 'quality_sleep_time',
+                           'deep_sleep_time', 'oxygen_saturation_average']
 
-    return data
+    # rearranging column layout to include percentage values at the end
+    transformed = transformed[['date', 'wakeup_time', 'hours_slept', 'quality_sleep_time',
+                               'deep_sleep_time', 'sleep_efficiency', 'oxygen_saturation_average']]
+
+    return transformed
 
 
 extracted_data = extract_data()
 transformed_data = transform_data(extracted_data)
 
+connection = sqlite3.connect('etl_autosleep.db')
+cursor = connection.cursor()
+
+sql_query = """
+CREATE TABLE IF NOT EXISTS autosleep_2022(
+    date DATE PRIMARY KEY, 
+    wakeup_time TIME,
+    hours_slept TIME,
+    quality_sleep_time TIME,
+    deep_sleep_time TIME,
+    sleep_efficiency VARCHAR(5),
+    oxygen_saturation_average VARCHAR(5)
+)
+"""
+
+cursor.execute(sql_query)
+transformed_data.to_sql('autosleep_2022', connection, if_exists='append', index=False)
+
+connection.close()
+
 pd.set_option('display.max_columns', 7)
-print(transformed_data)
+
