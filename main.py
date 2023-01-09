@@ -1,14 +1,16 @@
 import pandas as pd
 import sqlite3
+import datetime
 
 
-def extract_data():
+def extract_data(file):
     """
     Extracts the data from the .csv files to include only the columns needed
+    :param file: name of csv file that exists in the AutoSleep Data directory
     :return: dataframe with the columns including: date, wakeup time, time slept, efficiency, quality,
     deep sleep and SpO2 average.
     """
-    df = pd.read_csv('AutoSleep Data/2022 - 2023.csv',
+    df = pd.read_csv(f'AutoSleep Data/{file}.csv',
                      usecols=['toDate', 'waketime', 'asleep', 'efficiency', 'quality', 'deep', 'SpO2Avg'])
 
     return df
@@ -62,9 +64,9 @@ def convert_date(data):
 def transform_data(data):
     """
     Transforming the data so that it is useful and all rows have data
-    :return: data that has been cleaned
+    :param data: dataframe extracted with extract_data()
+    :return: data that has been cleaned and formatted for SQL database
     """
-
     transformed = remove_empty_spo2(data)
     convert_date(transformed)
 
@@ -83,28 +85,33 @@ def transform_data(data):
     return transformed
 
 
-extracted_data = extract_data()
-transformed_data = transform_data(extracted_data)
+try:
+    # getting a user input for the name of the csv file
+    file_name = input('Name of .csv file that is located inside the AutoSleep Data directory: ')
 
-connection = sqlite3.connect('etl_autosleep.db')
-cursor = connection.cursor()
+    # extracting and transforming the data
+    extracted_data = extract_data(file_name)
+    transformed_data = transform_data(extracted_data)
 
-sql_query = """
-CREATE TABLE IF NOT EXISTS autosleep_2022(
-    date DATE PRIMARY KEY, 
-    wakeup_time TIME,
-    hours_slept TIME,
-    quality_sleep_time TIME,
-    deep_sleep_time TIME,
-    sleep_efficiency VARCHAR(5),
-    oxygen_saturation_average VARCHAR(5)
-)
-"""
+    # creating a connection to SQL database
+    connection = sqlite3.connect('etl_autosleep.db')
+    cursor = connection.cursor()
 
-cursor.execute(sql_query)
-transformed_data.to_sql('autosleep_2022', connection, if_exists='append', index=False)
+    # finding out what year it was last year to name the SQL table
+    now = datetime.datetime.now()
+    last_year = now.year - 1
 
-connection.close()
+    # executing query to create a table in the database, and to append the data from dataframe onto it
 
-pd.set_option('display.max_columns', 7)
+    sql_query = f'CREATE TABLE IF NOT EXISTS autosleep_{last_year}(date DATE PRIMARY KEY, ' \
+                f'wakeup_time TIME,hours_slept TIME, quality_sleep_time TIME, deep_sleep_time TIME, ' \
+                f'sleep_efficiency VARCHAR(5), oxygen_saturation_average VARCHAR(5))'
 
+    cursor.execute(sql_query)
+    transformed_data.to_sql('autosleep_2022', connection, if_exists='append', index=False)
+
+    connection.close()
+    print(f'Database successfully updated with AutoSleep data from {last_year}!')
+except IOError:
+    # file couldn't be opened, perhaps you need to create it
+    print('File does not exist!')
