@@ -102,7 +102,6 @@ try:
     last_year = now.year - 1
 
     # executing query to create a table in the database, and to append the data from dataframe onto it
-
     sql_query = f'CREATE TABLE IF NOT EXISTS autosleep_{last_year}(date DATE PRIMARY KEY, ' \
                 f'wakeup_time TIME,hours_slept TIME, quality_sleep_time TIME, deep_sleep_time TIME, ' \
                 f'sleep_efficiency VARCHAR(5), oxygen_saturation_average VARCHAR(5))'
@@ -113,5 +112,5 @@ try:
     connection.close()
     print(f'Database successfully updated with AutoSleep data from {last_year}!')
 except IOError:
-    # file couldn't be opened, perhaps you need to create it
+    # file name does not exist
     print('File does not exist!')
