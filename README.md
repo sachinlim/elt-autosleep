@@ -16,7 +16,7 @@ ETL stands for **E**xtract, **T**ransform, and **L**oad. In this project, data i
 
 Data is available to be exported from within the app only, meaning it has to be manually done. This process leads to a manual implementation of batch processing, of which a CSV file is exported for analysis. This data is likely the information being used to display the sleep information from the previous night/week. 
 
-The CSV file contains a lot of columns that may have empty data, as the sensors on the Apple Watch may not be able to pick them up. Regardless of what data is included, the entire file is exported and extracted by the script into a pandas dataframe.
+The CSV file contains a lot of columns that may have empty data, as the sensors on the Apple Watch may not be able to pick them up. Regardless of what data is included or missing, the entire file is exported and only certain columns are extracted into a pandas dataframe.
 
 
 ## Data Transformation
