@@ -67,9 +67,9 @@ The pandas dataframe can be exported with the `to_csv('output.csv')` function, a
 
 ## Loading onto a database
 
-The final step of this process is the loading of the data onto a database. The script will generate a table with the name of "autosleep" and last year's date. The [SQL query](https://github.com/sachinlim/etl-autosleep/blob/main/main.py#L105) to create the tables follow the same format as the column headers, and the date is set as the primary key. 
+The final step of this process is the loading of the data onto a database. The script will generate a table with the name of "autosleep" and last year's date. The [SQL query](https://github.com/sachinlim/etl-autosleep/blob/main/main.py#L105) used to create the tables follow the same format as the column headers, and the date is set as the primary key. 
 
-Once the data has been loaded onto an SQLite database, it can be accessed for future needs: 
+Once the data has been loaded onto an SQLite database, it can be accessed for future needs.  
 
 ![image](https://user-images.githubusercontent.com/80691974/211578649-c94d8a41-cb7c-4d0b-ad61-396909d845f0.png)
 
