@@ -37,7 +37,9 @@ The column headers for the relevant data have other names, and the data formatti
 
 One important bit of information to take note of is that each date will have rows filled with information. It is not possible to have a date without there being some form of sleep data being available. However, the oxygen saturation levels (SpO2) might not always be included for each recorded date because the Sleep focus mode was not enabled. This leads to some columns being empty, which does not provide the entire picture of sleep.
 
-![image](https://user-images.githubusercontent.com/80691974/211573853-c0401973-1016-4639-a856-b47e17ef8441.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80691974/211573853-c0401973-1016-4639-a856-b47e17ef8441.png">
+</p>
 
 In the screenshot above, the last 3 rows contain SpO2 data from that night's sleep record. The empty columns mean that the entire row is removed.
 
@@ -45,8 +47,9 @@ In the screenshot above, the last 3 rows contain SpO2 data from that night's sle
 
 Some of the columns of data have months spelt out, meaning July is stored as `Jul` rather than `07`, and separated by spaces. 
 
-![image](https://user-images.githubusercontent.com/80691974/211575032-9664347b-f376-4f05-b9c7-18a296a9de4e.png)
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80691974/211575032-9664347b-f376-4f05-b9c7-18a296a9de4e.png">
+</p>
 
 In order to convert these to numbers, a [dictionary](https://github.com/sachinlim/etl-autosleep/blob/main/main.py#L37) is used. Each month has the text abbreviation as its key, and the numerical month as the values. The day of the week is also removed, as it is not needed.
 
@@ -57,7 +60,9 @@ The headers are changed to match the names on the database. Some of the column h
 
 The pandas dataframe can be exported with the `to_csv('output.csv')` function, and it looks like this: 
 
-![image](https://user-images.githubusercontent.com/80691974/211577870-2ac3fb87-05a9-4379-bc2a-4bafb4675fec.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80691974/211577870-2ac3fb87-05a9-4379-bc2a-4bafb4675fec.png">
+</p>
 
 
 ## Loading onto a database
@@ -70,4 +75,6 @@ Once the data has been loaded onto an SQLite database, it can be accessed for fu
 
 The columns are formatted in the following way:
 
-![image](https://user-images.githubusercontent.com/80691974/211578899-961c6ba5-ebd2-4637-bb4c-8f3131b4ca97.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80691974/211578899-961c6ba5-ebd2-4637-bb4c-8f3131b4ca97.png">
+</p>
