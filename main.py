@@ -49,14 +49,14 @@ def convert_date(data):
         'Dec': '12',
     }
 
-    # slicing the string so that it only includes the date.
+    # converting months to numeric values and slicing to only include the date
     data['toDate'] = data['toDate'].replace(dates, regex=True).str.slice(-11)
 
-    # removing the first value in the string because it is an integer, and formatting it as a date
-    data['toDate'] = data['toDate'].str.replace(',', '').str.replace(' ', '', 1).str.replace(' ', '-')
+    # removing unnecessary characters
+    data['toDate'] = data['toDate'].str.replace(',', '').str.replace(' ', '', 1)
 
-    # converting the string to a datetime format
-    data['toDate'] = pd.to_datetime(data['toDate'], dayfirst=True).dt.strftime("%Y/%m/%d")
+    # converting the string to datetime format
+    data['toDate'] = pd.to_datetime(data['toDate'], dayfirst=True).dt.strftime("%Y-%m-%d")
 
     return data
 
