@@ -61,7 +61,7 @@ The headers are changed to match the names on the database. Some of the column h
 The pandas dataframe can be exported with the `to_csv('output.csv')` function, and it looks like this: 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80691974/211577870-2ac3fb87-05a9-4379-bc2a-4bafb4675fec.png">
+  <img src="https://user-images.githubusercontent.com/80691974/211798584-56664b38-3995-4d43-83bc-a8e77811c058.png">
 </p>
 
 
@@ -71,7 +71,7 @@ The final step of this process is the loading of the data onto a database. The s
 
 Once the data has been loaded onto an SQLite database, it can be accessed for future needs.  
 
-![image](https://user-images.githubusercontent.com/80691974/211578649-c94d8a41-cb7c-4d0b-ad61-396909d845f0.png)
+![image](https://user-images.githubusercontent.com/80691974/211798887-519cbdb4-10be-4870-bffa-ec581ca50424.png)
 
 The columns are formatted in the following way:
 
