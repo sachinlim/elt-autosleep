@@ -14,9 +14,9 @@ ETL stands for **E**xtract, **T**ransform, and **L**oad. In this project, data i
 
 ## Data Extraction 
 
-Data is available to be exported from within the app only, meaning it has to be manually done. This process leads to a manual implementation of batch processing, of which a CSV file is exported for analysis. This data is likely the information being used to display the sleep information from the previous night/week. 
+Data is available to be exported from within the app only, meaning it has to be manually done and no [Siri Shortcuts](https://support.apple.com/en-gb/HT209055) are available. This process leads to a manual implementation of batch processing, of which a CSV file is exported for analysis. This data is likely the information being used by the app to display the sleep information from the previous night/week. 
 
-The CSV file contains a lot of columns that may have empty data, as the sensors on the Apple Watch may not be able to pick them up. Regardless of what data is included or missing, the entire file is exported and only certain columns are extracted into a pandas dataframe.
+The CSV file contains a lot of columns that may have empty data, as the sensors on the Apple Watch may not be able to pick them up throughout the sleep phase. Regardless of what data is included or missing, the entire file is exported and only certain columns are extracted into a pandas dataframe.
 
 
 ## Data Transformation
@@ -35,13 +35,13 @@ The column headers for the relevant data have other names, and the data formatti
 
 ### Removal of empty rows
 
-One important bit of information to take note of is that each date will have rows filled with information. It is not possible to have a date without there being some form of sleep data being available. However, the oxygen saturation levels (SpO2) might not always be included for each recorded date because the Sleep focus mode was not enabled. This leads to some columns being empty, which does not provide the entire picture of sleep.
+One important bit of information to take note of is that each date will have rows filled with information. It is not possible to have a date without there being some form of sleep data being available. However, the oxygen saturation levels (SpO2) may not always be included for each recorded date because the Sleep focus mode was not enabled. This leads to some columns being empty, which does not provide the entire picture of sleep - data will not be as accurate as a proper sleep study but it gives an idea.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/80691974/211573853-c0401973-1016-4639-a856-b47e17ef8441.png">
 </p>
 
-In the screenshot above, the last 3 rows contain SpO2 data from that night's sleep record. The empty columns mean that the entire row is removed.
+In the screenshot above, the last 3 columns on the right contain SpO2 data from that night's sleep record. The empty columns will mean that the entire row is removed because of there being not enough data.
 
 ### Conversion of months to numerical values
 
