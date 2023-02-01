@@ -1,7 +1,7 @@
 # What is this directory?
 
 
-This directory contains the files that [main.py](../main.py) will use to do the ETL process, and should mostly contain `.csv` files. This separate directory has been created to keep files and scrips separate. 
+This directory contains the files that [etl_manual.py](../etl_manual.py) will use to do the ETL process, and should mostly contain `.csv` files. This separate directory has been created to keep files and scrips separate. 
 
 ## What do the csv files look like?
 
