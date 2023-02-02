@@ -128,7 +128,7 @@ def load_to_sqlite():
 
     # executing query to create a table in the database, and to append the data from dataframe onto it
     sql_query = f'CREATE TABLE IF NOT EXISTS autosleep_{month}' \
-                f'(date DATE, wakeup_time TIME,hours_slept TIME, quality_sleep_time TIME, ' \
+                f'(date DATE PRIMARY KEY, wakeup_time TIME,hours_slept TIME, quality_sleep_time TIME, ' \
                 f'deep_sleep_time TIME, sleep_efficiency VARCHAR(5), oxygen_saturation_average VARCHAR(5))'
 
     cursor.execute(sql_query)
