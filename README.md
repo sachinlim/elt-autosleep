@@ -10,7 +10,7 @@ In order for AutoSleep to generate the data, it uses the built in functions avai
 ETL stands for **E**xtract, **T**ransform, and **L**oad. In this project, data is being extracted from a CSV file that was exported by the AutoSleep app, transformed to contain only the necessary data, and loaded onto an SQLite database. This project is using a batch processing model, as there is no continous stream of data due to how the data is originally obtained. 
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80691974/216351883-f531de06-f12d-4764-bd23-0272ae0711c2.png" width=800>
+  <img src="https://user-images.githubusercontent.com/80691974/232035467-c1fd1222-51cd-4597-a501-28c2f645d1a9.png" width=800>
 </p>
 
 Within Airflow, this is what the graph currently looks like for the tasks:
@@ -19,6 +19,7 @@ Within Airflow, this is what the graph currently looks like for the tasks:
   <img src="https://user-images.githubusercontent.com/80691974/216355805-e36ff03b-05d7-46a9-8944-14b370e97a14.png" width=700>
 </p>
 
+
 ## Data Extraction 
 
 Data is available to be exported from within the app only, meaning it has to be manually done and no [Siri Shortcuts](https://support.apple.com/en-gb/HT209055) are available. 
@@ -26,8 +27,9 @@ Data is available to be exported from within the app only, meaning it has to be 
 ### Manual Extraction
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80691974/216352011-00244ed0-9309-4c30-b75c-c8c00882c9ec.png" width=600>
+  <img src="https://user-images.githubusercontent.com/80691974/232035150-8d7166db-881a-40ae-b13e-47e0bbf1f725.png" width=600>
 </p>
+
 
 This process leads to a manual implementation for the first part of the project, of which a CSV file is first exported for analysis from within the app. Using Airflow, the process of uploading the CSV file to Amazon S3 is [automated](dags/upload_to_s3.py). 
 
